@@ -1,8 +1,8 @@
 //#PLEASE refer to the README.md for accepted values FOR THE VARIABLES BELOW
-client_secret                   = "PLEASE ENTER CLIENT SECRET"                                     # "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-client_id                       = "PLEASE ENTER CLIENT ID"                                         # "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-tenant_id                       = "PLEASE ENTER TENANT ID"                                         # "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-subscription_id                 = "PLEASE ENTER SUBSCRIPTION ID"                                   # "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+client_secret                   = "PLEASE ENTER CLIENT SECRET"                                     # ""
+client_id                       = "PLEASE ENTER CLIENT ID"                                         # ""
+tenant_id                       = "PLEASE ENTER TENANT ID"                                         # ""
+subscription_id                 = "PLEASE ENTER SUBSCRIPTION ID"                                   # ""
 source_image_vhd_uri            = "PLEASE ENTER SOURCE IMAGE VHD URI OR noCustomUri"               # "noCustomUri"
 resource_group_name             = "PLEASE ENTER RESOURCE GROUP NAME"                               # "checkpoint-ha-terraform"
 cluster_name                    = "PLEASE ENTER CLUSTER NAME"                                      # "checkpoint-ha-terraform"
