@@ -1,1 +1,111 @@
 Enter file contents here
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "eastus"
+        },
+        "cloudGuardVersion": {
+            "value": "R81.20 - Bring Your Own License"
+        },
+        "adminPassword": {
+            "value": "Checkpoint123!"
+        },
+        "authenticationType": {
+            "value": "password"
+        },
+        "vmName": {
+            "value": "danclsuter"
+        },
+        "vmSize": {
+            "value": "Standard_D4ds_v5"
+        },
+        "sicKey": {
+            "value": "Checkpoint123"
+        },
+        "virtualNetworkName": {
+            "value": "vnet01"
+        },
+        "virtualNetworkAddressPrefixes": {
+            "value": [
+                "10.2.0.0/16"
+            ]
+        },
+        "subnet1Name": {
+            "value": "Frontend"
+        },
+        "subnet1Prefix": {
+            "value": "10.2.0.0/24"
+        },
+        "subnet1StartAddress": {
+            "value": "10.2.0.4"
+        },
+        "subnet2Name": {
+            "value": "Backend"
+        },
+        "subnet2Prefix": {
+            "value": "10.2.1.0/24"
+        },
+        "subnet2StartAddress": {
+            "value": "10.2.1.4"
+        },
+        "vnetNewOrExisting": {
+            "value": "new"
+        },
+        "virtualNetworkExistingRGName": {
+            "value": "Dan-Template-Delete"
+        },
+        "bootstrapScript": {
+            "value": ""
+        },
+        "allowDownloadFromUploadToCheckPoint": {
+            "value": "true"
+        },
+        "additionalDiskSizeGB": {
+            "value": 0
+        },
+        "diskType": {
+            "value": "Premium_LRS"
+        },
+        "managedSystemAssigned": {
+            "value": "yes"
+        },
+        "sourceImageVhdUri": {
+            "value": "noCustomUri"
+        },
+        "availabilityOptions": {
+            "value": "Availability Set"
+        },
+        "customMetrics": {
+            "value": "yes"
+        },
+        "floatingIP": {
+            "value": "no"
+        },
+        "publicIPPrefix": {
+            "value": "yes"
+        },
+        "createNewIPPrefix": {
+            "value": "yes"
+        },
+        "adminShell": {
+            "value": "/etc/cli.sh"
+        },
+        "tagsByResource": {
+            "value": {}
+        },
+        "deployNewNSG": {
+            "value": true
+        },
+        "NewNsgName": {
+            "value": "danclsuter-nsg"
+        },
+        "VipsNumber": {
+            "value": 1
+        },
+        "VipNames": {
+            "value": ",,,,,,,,"
+        }
+    }
+}
