@@ -136,11 +136,14 @@
                 "Description": "The default shell for the admin user"
             }
         },
-        "sicKey": {
-            "type": "securestring",
-            "metadata": {
-                "description": "One time key for Secure Internal Communication"
-            }
+ #       "sicKey": {
+ #           "type": "securestring",
+ #           "metadata": {
+ #               "description": "One time key for Secure Internal Communication"
+ #          }
+ #       },
+       "sicKey": {
+          "value": "Checkpoint123"
         },
         "virtualNetworkName": {
             "type": "string",
