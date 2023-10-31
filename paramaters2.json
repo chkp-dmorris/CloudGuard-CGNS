@@ -10,7 +10,7 @@
             "value": "password"
         },
          "adminPassword": {
-           "value": "[variable ('fwpass')]"
+           "value": "$('fwpass')]"
          },
         "vmName": {
             "value": "danclsuter"
