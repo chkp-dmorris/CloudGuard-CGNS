@@ -1,0 +1,355 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Deployment location"
+            },
+            "defaultValue": "[resourceGroup().location]"
+        },
+        "cloudGuardVersion": {
+            "type": "string",
+            "allowedValues": [
+                "R80.40 - Bring Your Own License",
+                "R80.40 - Pay As You Go (NGTP)",
+                "R80.40 - Pay As You Go (NGTX)",
+                "R81 - Bring Your Own License",
+                "R81 - Pay As You Go (NGTP)",
+                "R81 - Pay As You Go (NGTX)",
+                "R81.10 - Bring Your Own License",
+                "R81.10 - Pay As You Go (NGTP)",
+                "R81.10 - Pay As You Go (NGTX)",
+                "R81.20 - Bring Your Own License",
+                "R81.20 - Pay As You Go (NGTP)",
+                "R81.20 - Pay As You Go (NGTX)"
+            ],
+            "defaultValue": "R81.20 - Bring Your Own License",
+            "metadata": {
+                "description": "Check Point CloudGuard version"
+            }
+        },
+        "authenticationType": {
+            "type": "string",
+            "allowedValues": [
+                "password",
+                "sshPublicKey"
+            ],
+            "defaultValue": "password",
+            "metadata": {
+                "description": "Authentication type"
+            }
+        },
+        "sshPublicKey": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Administrator SSH public key"
+            }
+        },
+        "adminPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Administrator password"
+            },
+            "defaultValue": ""
+        },
+        "MaintenanceModePasswordHash": {
+            "type": "securestring",
+            "defaultValue": "",
+            "metadata": {
+                "Description": "Maintenance mode password hash, relevant only for R81.20 and higher versions"
+            }
+        },
+        "SerialConsolePasswordHash": {
+            "type": "securestring",
+            "defaultValue": "",
+            "metadata": {
+                "Description": "Optional parameter, used to enable serial console connection in case of SSH key as authentication type"
+            }
+        },
+        "floatingIP": {
+            "type": "string",
+            "allowedValues": [
+                "no",
+                "yes"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Deploy the Load Balancers with floating IP"
+            }
+        },
+        "publicIPPrefix": {
+            "type": "string",
+            "allowedValues": [
+                "no",
+                "yes"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Use public IP prefix"
+            }
+        },
+        "createNewIPPrefix": {
+            "type": "string",
+            "allowedValues": [
+                "no",
+                "yes"
+            ],
+            "defaultValue": "no",
+            "metadata": {
+                "description": "Create new public IP prefix"
+            }
+        },
+        "ipPrefixExistingResourceId": {
+            "type": "string",
+            "metadata": {
+                "description": "The resource id of the existing IP prefix"
+            },
+            "defaultValue": ""
+        },
+        "vmName": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().name]",
+            "metadata": {
+                "description": "Name of the Check Point Cluster object"
+            }
+        },
+        "vmSize": {
+            "type": "string",
+            "defaultValue": "Standard_D3_v2",
+            "metadata": {
+                "description": "Size of the VM"
+            }
+        },
+        "adminShell": {
+            "type": "string",
+            "defaultValue": "/etc/cli.sh",
+            "allowedValues": [
+                "/etc/cli.sh",
+                "/bin/bash",
+                "/bin/csh",
+                "/bin/tcsh"
+            ],
+            "metadata": {
+                "Description": "The default shell for the admin user"
+            }
+        },
+        "sicKey": {
+            "type": "securestring",
+            "metadata": {
+                "description": "One time key for Secure Internal Communication"
+            }
+        },
+        "virtualNetworkName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the virtual network"
+            },
+            "defaultValue": "[concat(resourceGroup().name, '-vnet')]"
+        },
+        "virtualNetworkAddressPrefixes": {
+            "type": "array",
+            "metadata": {
+                "description": "The address prefixes of the virtual network"
+            },
+            "defaultValue": [
+                "10.0.0.0/16"
+            ]
+        },
+        "subnet1Name": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the frontend subnet"
+            },
+            "defaultValue": "Frontend"
+        },
+        "subnet1Prefix": {
+            "type": "string",
+            "metadata": {
+                "description": "The address prefix of the frontend subnet"
+            },
+            "defaultValue": "10.0.1.0/24"
+        },
+        "subnet1StartAddress": {
+            "type": "string",
+            "metadata": {
+                "description": "The first available address on the 1st subnet"
+            },
+            "defaultValue": "10.0.1.10"
+        },
+        "subnet2Name": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the backend subnet"
+            },
+            "defaultValue": "Backend"
+        },
+        "subnet2Prefix": {
+            "type": "string",
+            "metadata": {
+                "description": "The address prefix of the backend subnet"
+            },
+            "defaultValue": "10.0.2.0/24"
+        },
+        "subnet2StartAddress": {
+            "type": "string",
+            "metadata": {
+                "description": "The first available address on the 2nd subnet"
+            },
+            "defaultValue": "10.0.2.10"
+        },
+        "vnetNewOrExisting": {
+            "type": "string",
+            "defaultValue": "new",
+            "allowedValues": [
+                "new",
+                "existing"
+            ],
+            "metadata": {
+                "Description": "Indicates whether the virtual network is new or existing"
+            }
+        },
+        "virtualNetworkExistingRGName": {
+            "type": "string",
+            "metadata": {
+                "description": "Resource Group of the existing virtual network"
+            },
+            "defaultValue": "[resourceGroup().name]"
+        },
+        "bootstrapScript": {
+            "type": "string",
+            "metadata": {
+                "description": "Bootstrap script"
+            },
+            "defaultValue": ""
+        },
+        "allowDownloadFromUploadToCheckPoint": {
+            "type": "string",
+            "allowedValues": [
+                "true",
+                "false"
+            ],
+            "defaultValue": "true",
+            "metadata": {
+                "description": "Automatically download Blade Contracts and other important data. Improve product experience by sending data to Check Point"
+            }
+        },
+        "additionalDiskSizeGB": {
+            "type": "int",
+            "defaultValue": 0,
+            "metadata": {
+                "description": "Amount of additional disk space (in GB)"
+            },
+            "minValue": 0,
+            "maxValue": 3995
+        },
+        "diskType": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "metadata": {
+                "description": "The type of the OS disk. Premium is applicable only to DS machine sizes"
+            },
+            "allowedValues": [
+                "Standard_LRS",
+                "Premium_LRS"
+            ]
+        },
+        "role": {
+            "type": "string",
+            "defaultValue": "Contributor",
+            "metadata": {
+                "description": "Role"
+            }
+        },
+        "managedSystemAssigned": {
+            "type": "string",
+            "allowedValues": [
+                "yes",
+                "no"
+            ],
+            "defaultValue": "yes",
+            "metadata": {
+                "description": "Automatically create a Service Principal for this deployment."
+            }
+        },
+        "sourceImageVhdUri": {
+            "type": "string",
+            "defaultValue": "noCustomUri",
+            "metadata": {
+                "description": "The URI of the blob containing the development image"
+            }
+        },
+        "availabilityOptions": {
+            "type": "string",
+            "allowedValues": [
+                "Availability Set",
+                "Availability Zones"
+            ],
+            "defaultValue": "Availability Set",
+            "metadata": {
+                "description": "Use replicated Cluster VMs in Availability Set or Availability Zones"
+            }
+        },
+        "_artifactsLocation": {
+            "type": "string",
+            "metadata": {
+                "description": "Use the following URI when deploying a custom template: https://raw.githubusercontent.com/CheckPointSW/CloudGuardIaaS/master/azure/templates/"
+            },
+            "defaultValue": "[deployment().properties.templateLink.uri]"
+        },
+        "_artifactsLocationSasToken": {
+            "type": "securestring",
+            "metadata": {
+                "description": "The sasToken required to access _artifactsLocation.  When the template is deployed using the accompanying scripts, a sasToken will be automatically generated. Use the defaultValue if the staging location is not secured."
+            },
+            "defaultValue": ""
+        },
+        "customMetrics": {
+            "type": "string",
+            "allowedValues": [
+                "no",
+                "yes"
+            ],
+            "defaultValue": "yes",
+            "metadata": {
+                "Description": "Indicates whether CloudGuard Metrics will be used for Cluster members monitoring"
+            }
+        },
+        "smart1CloudTokenA": {
+            "type": "securestring",
+            "defaultValue": ""
+        },
+        "smart1CloudTokenB": {
+            "type": "securestring",
+            "defaultValue": ""
+        },
+        "tagsByResource": {
+            "type": "object",
+            "defaultValue": {}
+        },
+        "deployNewNSG": {
+            "type": "bool",
+            "defaultValue": true
+        },
+        "ExistingNSG": {
+            "type": "object",
+            "defaultValue": {}
+        },
+        "NewNsgName": {
+            "type": "string",
+            "defaultValue": "[concat(parameters('vmName'),'-nsg')]"
+        },
+        "VipsNumber": {
+            "type": "int",
+            "defaultValue": 1,
+            "minValue": 1,
+            "maxValue": 10
+        },
+        "VipNames": {
+            "type": "string",
+            "defaultValue": ""
+        }
+    }
+}
