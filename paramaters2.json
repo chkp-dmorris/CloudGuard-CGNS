@@ -6,9 +6,6 @@
         "cloudGuardVersion": {
             "value": "R81.20 - Bring Your Own License"
         },
-        "adminPassword": {
-            "value": "Checkpoint123!"
-        },
         "authenticationType": {
             "value": "password"
         },
