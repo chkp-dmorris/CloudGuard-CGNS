@@ -9,6 +9,9 @@
         "authenticationType": {
             "value": "password"
         },
+         "adminPassword": {
+           "value": "$(fwpass)"
+         },
         "vmName": {
             "value": "danclsuter"
         },
