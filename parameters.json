@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "location": {
-            "value": "eastus"
+            "value": "Canada Central"
         },
         "cloudGuardVersion": {
             "value": "R81.20 - Bring Your Own License"
@@ -24,30 +24,30 @@
             "value": "Checkpoint123"
         },
         "virtualNetworkName": {
-            "value": "vnet01"
+            "value": "vwan-vnet01"
         },
         "virtualNetworkAddressPrefixes": {
             "value": [
-                "10.2.0.0/16"
+                "10.20.0.0/16"
             ]
         },
         "subnet1Name": {
             "value": "Frontend"
         },
         "subnet1Prefix": {
-            "value": "10.2.0.0/24"
+            "value": "10.20.0.0/24"
         },
         "subnet1StartAddress": {
-            "value": "10.2.0.4"
+            "value": "10.20.0.4"
         },
         "subnet2Name": {
             "value": "Backend"
         },
         "subnet2Prefix": {
-            "value": "10.2.1.0/24"
+            "value": "10.20.1.0/24"
         },
         "subnet2StartAddress": {
-            "value": "10.2.1.4"
+            "value": "10.20.1.4"
         },
         "vnetNewOrExisting": {
             "value": "new"
